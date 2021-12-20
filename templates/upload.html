@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Ödev Yükleme Sistemi</title>
+</head>
+<body>
+
+    <div class="bg-image" 
+    style="background-image: url('https://files.123freevectors.com/wp-content/original/106597-blue-and-white-abstract.jpg'); 
+           height: 100vh; background-size: cover;">
+    
+
+    <div  class="container">
+        <br><br>
+    <div class="card" style=" border: 1px solid #000000;">
+        <div class="card-body"><br>
+        <pre name="isimsoyisim" style="display:inline; font-size: 30px; text-transform: uppercase">{{request.user.first_name}} {{request.user.last_name}} </pre> <!-- buraya request. isim soyisim de gelecek-->
+    
+      
+        
+        <input style="float:right" type="button" class="btn btn-outline-danger" value="Çıkış" onclick=" relocate_home()">
+        <br>
+            <script>
+            function relocate_home()
+            {   alert("Çıkış yaptınız.");
+                location.href = "{% url 'logout' %}";
+            } 
+            </script>
+        <hr>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+               <input type="file" id="document" name="document" accept=".pdf,.doc" >
+               <button type="submit">Projeyi Yükle</button>
+           </form>
+           <br> <br> 
+
+
+
+<br>
+
+{% if todos %}
+
+              {% for todos in todos %}
+               {% if request.user.first_name|upper  in todos.counselorname|upper  and request.user.last_name|upper  in todos.counselorname|upper %} 
+                <table class="table table-sm">
+                <thead>
+                <tr>
+                
+                <th>Öğrenci İsimleri</th>
+                <th>Öğrenci Numaraları</th>
+                <th>Proje Dönemi</th>
+                <th>Proje Konusu</th>
+                <th>Ders Adı</th>
+                <th>Pdf Dosyası</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                <th scope="row" style="font-weight: normal;">{{todos.studentname}}</th>
+                <td>{{todos.studentno}}</td>
+                <td>{{todos.projectdate}}</td>
+                <td>{{todos.projecttitle}}</td>
+                <td>{{todos.projecttype}}</td>
+                <td><a href="{{ MEDIA_URL }}/media/{{todos.pdfself}}">{{todos.pdfself}}</a></td>
+                </tr>
+                </tbody>
+                </table>
+               {% else %}
+            
+               {% endif %}
+
+
+              
+              {% endfor %}
+           
+{% else %}
+<div class = "alert alert-danger">
+Herhangi bir veri yok
+</div>
+
+{% endif %}
+
+           
+
+
+
+
+
+
+
+    </div>
+</div>
+
+</div>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+  </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+  </script>
+</body>
+</html>
